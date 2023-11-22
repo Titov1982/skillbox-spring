@@ -33,6 +33,13 @@ public class CommandLineScanner {
         System.out.println("Введите информацию о контакте в формате -> \"Иванов Иван Иванович; +79991234567; ivanov@mail.com\":");
         String contactLine = scanner.nextLine();
         String[] contactData = contactLine.split(";");
+        if (contactData.length != 3) {
+            System.out.println("Вы ввели не верное кол-во параметров с разделителем ';'.\nПопробуйте заного.");
+            return;
+        }
+        for (int i=0; i<contactData.length; i++) {
+            contactData[i] = contactData[i].strip();
+        }
         contactStorage.addContact(new Contact(contactData[0], contactData[1], contactData[2]));
     }
 
@@ -45,6 +52,7 @@ public class CommandLineScanner {
             for (Contact contact : contacts) {
                 System.out.println(contact);
             }
+            System.out.println();
         }
     }
 
@@ -53,7 +61,7 @@ public class CommandLineScanner {
         String contactLine = scanner.nextLine();
         Contact deletedContact = contactStorage.deleteContact(contactLine);
         if (deletedContact != null){
-            System.out.println("Удален конакт: " + deletedContact.toString());
+            System.out.println("Удален конакт: " + deletedContact);
         }
         else {
             System.out.println("Контакт отсутствует в списке.");
@@ -80,11 +88,14 @@ public class CommandLineScanner {
         }
     }
 
+    private void help() {
+        System.out.println("Вам доступны следующие команды:");
+        System.out.print("list - вывести весь список контактов\n" + "add - добавить новый контакт\n" + "delete - удалить контакт\n" + "save - сохранить список контактов в файле\n" + "help - помощь\n" + "exit - выход из программы\n" + "--------------------------------------------\n");
+    }
+
     public void startCommandLineScanner() {
         System.out.println("Добро пожаловать в справочник контактов!");
-        System.out.println("Вам доступны следующие команды:");
-        System.out.print("list - вывести весь список контактов\n" + "add - добавить новый контакт\n" + "delete - удалить контакт\n" + "save - сохранить список контактов в файле\n" + "exit - выход из программы\n" + "--------------------------------------------\n");
-
+        help();
         while (true) {
             System.out.println("Введите команду:");
 
@@ -103,6 +114,8 @@ public class CommandLineScanner {
                 delete();
             } else if (command.equals("save")) {
                 save();
+            }   else if (command.equals("help")) {
+                help();
             } else if (command.equals("exit")) {
                 break;
             }else {

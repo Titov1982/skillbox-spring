@@ -5,13 +5,11 @@ spring:
 app:
   data-file-path:
   data-file-name: default-contacts.txt
-#  data-start-init: false
-
----
-spring:
-  profiles: simple
 
 ---
 spring:
   profiles: init
 
+---
+spring:
+  profiles: simple

@@ -11,6 +11,10 @@ public class App
     {
         ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
 
+        String[] profileNames = context.getEnvironment().getActiveProfiles();
+        for (String profileName: profileNames) {
+            System.out.println("Загружен профиль: " + profileName);
+        }
         context.getBean(CommandLineWorker.class).work();
     }
 }

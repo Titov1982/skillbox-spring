@@ -11,7 +11,8 @@ import java.util.Scanner;
 
 @ComponentScan("ru.tai")
 @Configuration
-@PropertySource("classpath:application.yaml")
+//@PropertySource("classpath:application.yaml")
+@PropertySource("classpath:application.properties")
 public class AppConfig {
 
     @Bean
@@ -22,13 +23,10 @@ public class AppConfig {
     @Bean
     public static PropertySourcesPlaceholderConfigurer properties() {
         PropertySourcesPlaceholderConfigurer configurer = new PropertySourcesPlaceholderConfigurer();
-        YamlPropertiesFactoryBean yamlPropertiesFactoryBean = new YamlPropertiesFactoryBean();
-        yamlPropertiesFactoryBean.setResources(new ClassPathResource("application.yaml"));
-        configurer.setProperties(Objects.requireNonNull(yamlPropertiesFactoryBean.getObject()));
+//        YamlPropertiesFactoryBean yamlPropertiesFactoryBean = new YamlPropertiesFactoryBean();
+//        yamlPropertiesFactoryBean.setResources(new ClassPathResource("application.yaml"));
+//        configurer.setProperties(Objects.requireNonNull(yamlPropertiesFactoryBean.getObject()));
+        configurer.setLocation(new ClassPathResource("application.properties"));
         return configurer;
-    }
-
-    public AppConfig() {
-        System.out.println("DEF");
     }
 }
