@@ -34,13 +34,13 @@ public class CommandLineScanner {
         String contactLine = scanner.nextLine();
         String[] contactData = contactLine.split(";");
         if (contactData.length != 3) {
-            System.out.println("Вы ввели не верное кол-во параметров с разделителем ';'.\nПопробуйте заного.");
+            System.out.println("Вы ввели не верное кол-во параметров с разделителем ';'.\nПопробуйте заново.");
             return;
         }
         for (int i=0; i<contactData.length; i++) {
             contactData[i] = contactData[i].strip();
         }
-        contactStorage.addContact(new Contact(contactData[0], contactData[1], contactData[2]));
+        contactStorage.addContact(new Contact(contactData[0], contactData[1], contactData[2].toLowerCase()));
     }
 
     private void list(){

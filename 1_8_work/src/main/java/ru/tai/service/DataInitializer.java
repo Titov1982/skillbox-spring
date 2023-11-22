@@ -31,13 +31,21 @@ public class DataInitializer {
         try {
             file = resource.getFile();
             BufferedReader reader = new BufferedReader(new FileReader(file.getAbsolutePath()));
+            long strCount = 0;
             while (true) {
                 String strData = reader.readLine();
                 if (strData == null) {
                     break;
                 }
+                strCount++;
                 String[] contactData = strData.split(";");
-                contactStorage.addContact(new Contact(contactData[0], contactData[1], contactData[2]));
+
+                if (contactData.length != 3){
+                    System.out.println("ERROR: Невозможно прочитать данные из файла. Данные повреждены на строке - " + strCount);
+                    continue;
+                }
+
+                contactStorage.addContact(new Contact(contactData[0], contactData[1], contactData[2].toLowerCase()));
             }
 
         } catch (IOException e) {
