@@ -4,7 +4,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import ru.tai.configuration.AppConfig;
 
-
 public class App 
 {
     public static void main( String[] args )
