@@ -6,7 +6,7 @@ import ru.tai._7_work.model.Student;
 import java.util.*;
 
 @Repository
-public class MemoryStudentRepository implements StudentRepository{
+public class MemoryStudentRepository implements ru.tai._7_work.repository.StudentRepository {
 
     private final Map<UUID, Student> students = new HashMap<>();
 

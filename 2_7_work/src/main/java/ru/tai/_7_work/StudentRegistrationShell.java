@@ -1,11 +1,13 @@
 package ru.tai._7_work;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
+import ru.tai._7_work.event.CreateStudentEvent;
+import ru.tai._7_work.event.DeleteStudentEvent;
 import ru.tai._7_work.model.Student;
-import ru.tai._7_work.service.StudentGenerator;
 import ru.tai._7_work.service.StudentService;
 
 import java.text.MessageFormat;
@@ -15,6 +17,9 @@ import java.util.*;
 public class StudentRegistrationShell {
 
     private final StudentService studentService;
+
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
 //    @Autowired
 //    private StudentGenerator studentGenerator;
 
@@ -29,13 +34,12 @@ public class StudentRegistrationShell {
     }
 
     @ShellMethod(key = "a")
-    public String add(@ShellOption(value = "f") String firstName,
+    public void add(@ShellOption(value = "f") String firstName,
                       @ShellOption(value = "l") String lastName,
                       @ShellOption(value = "a") Integer age) {
 
         Student student = studentService.add(firstName, lastName, age);
-        return MessageFormat.format("Добавлен студент:ID: {0}, ФИО: {1} {2}, Возраст: {3}",
-                student.getId(), student.getFirstName(), student.getLastName(), student.getAge());
+        eventPublisher.publishEvent(new CreateStudentEvent(this, student));
     }
 
     @ShellMethod(key = "l")
@@ -47,10 +51,9 @@ public class StudentRegistrationShell {
     }
 
     @ShellMethod(key = "d")
-    public String delete(UUID id) {
+    public void delete(UUID id) {
         Student student = studentService.delete(id);
-        return MessageFormat.format("Удален студент:ID: {0}, ФИО: {1} {2}, Возраст: {3}",
-                        student.getId(), student.getFirstName(), student.getLastName(), student.getAge());
+        eventPublisher.publishEvent(new DeleteStudentEvent(this, student));
     }
 
     @ShellMethod(key = "da")

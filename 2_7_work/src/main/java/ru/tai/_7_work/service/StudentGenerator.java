@@ -3,13 +3,8 @@ package ru.tai._7_work.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.context.event.ApplicationPreparedEvent;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.boot.context.event.ApplicationStartedEvent;
-import org.springframework.context.event.ApplicationContextEvent;
-import org.springframework.context.event.ContextStartedEvent;
 import org.springframework.context.event.EventListener;
-import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
 
@@ -20,7 +15,7 @@ public class StudentGenerator {
 
     @Value("${app.random-max-student-count}")
     private String randomMaxStudentCount;
-    private final StudentService studentService;
+    private final ru.tai._7_work.service.StudentService studentService;
 
     @EventListener(ApplicationReadyEvent.class)
 //    @EventListener(ApplicationContextEvent.class)

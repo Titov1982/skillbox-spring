@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class StudentServiceImpl implements StudentService{
+public class StudentServiceImpl implements ru.tai._7_work.service.StudentService {
 
     private final StudentRepository studentRepository;
 
