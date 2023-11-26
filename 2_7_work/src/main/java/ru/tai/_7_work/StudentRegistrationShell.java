@@ -1,37 +1,24 @@
 package ru.tai._7_work;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
+import org.springframework.stereotype.Component;
 import ru.tai._7_work.event.CreateStudentEvent;
 import ru.tai._7_work.event.DeleteStudentEvent;
 import ru.tai._7_work.model.Student;
 import ru.tai._7_work.service.StudentService;
 
-import java.text.MessageFormat;
 import java.util.*;
 
 @ShellComponent
+@RequiredArgsConstructor
 public class StudentRegistrationShell {
 
     private final StudentService studentService;
-
-    @Autowired
-    private ApplicationEventPublisher eventPublisher;
-//    @Autowired
-//    private StudentGenerator studentGenerator;
-
-//    public StudentRegistrationShell(StudentService studentService, StudentGenerator studentGenerator) {
-//        this.studentService = studentService;
-//        this.studentGenerator = studentGenerator;
-//        this.studentGenerator.startStudentGenerator();
-//    }
-
-    public StudentRegistrationShell(StudentService studentService) {this.studentService = studentService;
-
-    }
+    private final ApplicationEventPublisher eventPublisher;
 
     @ShellMethod(key = "a")
     public void add(@ShellOption(value = "f") String firstName,
@@ -45,8 +32,11 @@ public class StudentRegistrationShell {
     @ShellMethod(key = "l")
     public void list() {
         List<Student> studentList = studentService.list();
+        System.out.println("Список студентов:");
+        int count = 1;
         for (Student student : studentList) {
-            System.out.println(student);
+            System.out.println(count + ": " + student);
+            count++;
         }
     }
 

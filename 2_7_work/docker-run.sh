@@ -1,0 +1,1 @@
+docker run -it --rm --env STUDENT_GENERATOR=true --env RANDOM_MAX_STUDENT_COUNT=10 2_7_work

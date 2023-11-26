@@ -1,0 +1,1 @@
+docker build -t 2_7_work .
