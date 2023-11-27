@@ -5,7 +5,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
-import org.springframework.stereotype.Component;
 import ru.tai._7_work.event.CreateStudentEvent;
 import ru.tai._7_work.event.DeleteStudentEvent;
 import ru.tai._7_work.model.Student;

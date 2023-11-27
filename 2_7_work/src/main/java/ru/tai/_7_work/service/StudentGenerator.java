@@ -3,7 +3,6 @@ package ru.tai._7_work.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
@@ -19,7 +18,6 @@ public class StudentGenerator {
     private String randomMaxStudentCount;
     private final StudentService studentService;
 
-//    @EventListener(ApplicationReadyEvent.class)
     @EventListener(ApplicationStartedEvent.class)
     public void startStudentGenerator() {
         int studentCount = getRandomNumber(1, Integer.parseInt(randomMaxStudentCount));
