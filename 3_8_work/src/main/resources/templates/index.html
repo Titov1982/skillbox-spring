@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Управление контактами</title>
+</head>
+<body>
+    <h1>Управление контактами</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Имя</th>
+            <th>Фамилия</th>
+            <th>Email</th>
+            <th>Телефон</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="contact : ${contacts}">
+            <td th:text="${contact.id}"></td>
+            <td th:text="${contact.firstName}"></td>
+            <td th:text="${contact.lastName}"></td>
+            <td th:text="${contact.email}"></td>
+            <td th:text="${contact.phone}"></td>
+            <td>
+                <a th:href="@{/contact/edit/{id}(id=${contact.id})}">Редактировать</a>
+                <a th:href="@{/contact/delete/{id}(id=${contact.id})}">Удалить</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <a href="/contact/create">Создать новый контакт</a>
+
+</body>
+</html>
