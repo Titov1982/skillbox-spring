@@ -1,1 +1,9 @@
-
+spring:
+  jpa:
+    generate-ddl: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/news_service_db
+    username: postgres
+    password: postgres
+    hikari:
+      schema: app_schema
