@@ -3,6 +3,7 @@ package ru.tai._10_work.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import ru.tai._10_work.model.News;
 import ru.tai._10_work.model.User;
 import ru.tai._10_work.repository.UserRepository;
 import ru.tai._10_work.service.UserService;

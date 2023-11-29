@@ -21,10 +21,13 @@ public class News {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String title;
 
+    @Column(nullable = false)
     private String description;
 
+    @Column(nullable = false)
     @CreationTimestamp
     private Instant createAt;
 
@@ -41,4 +44,12 @@ public class News {
     @OneToMany(mappedBy = "news", cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<Comment> comments = new ArrayList<>();
+
+    public void addComment(Comment comment) {
+        comments.add(comment);
+    }
+
+    public void deleteComment(Comment comment) {
+        comments.remove(comment);
+    }
 }

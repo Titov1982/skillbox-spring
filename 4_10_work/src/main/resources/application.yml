@@ -7,3 +7,11 @@ spring:
     password: postgres
     hikari:
       schema: app_schema
+
+app:
+  entity-generator:
+    enabled: true
+
+logging:
+  level:
+    ru.tai: DEBUG

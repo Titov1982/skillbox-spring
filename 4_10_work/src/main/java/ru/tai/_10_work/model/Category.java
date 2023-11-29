@@ -16,6 +16,7 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true, nullable = false)
     private String name;
 
 //    @OneToMany(mappedBy = "category", cascade = {CascadeType.DETACH, CascadeType.MERGE,
@@ -23,4 +24,12 @@ public class Category {
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<News> newsList = new ArrayList<>();
+
+    public void addNews(News news) {
+        newsList.add(news);
+    }
+
+    public void deleteNews(News news) {
+        newsList.remove(news);
+    }
 }
