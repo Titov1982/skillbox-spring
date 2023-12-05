@@ -30,7 +30,17 @@ public class CategoryServiceImpl implements CategoryService {
         if (category != null){
             return category;
         }
-        throw new EntityNotFoundException(MessageFormat.format("Пользователь с ID= {0} не найден!", id));
+        throw new EntityNotFoundException(MessageFormat.format("Категория с ID= {0} не найдена!", id));
+    }
+
+    @Override
+    public Category findByName(String name) {
+        log.debug("CategoryServiceImpl->findByName name= {}", name);
+        Category category = categoryRepository.findByName(name).orElse(null);
+        if (category != null){
+            return category;
+        }
+        return null;
     }
 
     @Override

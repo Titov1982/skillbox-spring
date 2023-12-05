@@ -1,0 +1,31 @@
+app:
+  entity-generator:
+    enabled: false
+
+logging:
+  level:
+    ru.tai: DEBUG
+
+server:
+  port: 8080
+
+spring:
+  jpa:
+#    hibernate:
+#      ddl-auto: create-drop
+    generate-ddl: true
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database: h2
+    database-platform: org.hibernate.dialect.H2Dialect
+  datasource:
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password:
+    driverClassName: org.h2.Driver
+  h2:
+    console:
+      settings:
+        trace: true

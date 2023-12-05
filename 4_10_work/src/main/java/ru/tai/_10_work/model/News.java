@@ -45,11 +45,4 @@ public class News {
     @ToString.Exclude
     private List<Comment> comments = new ArrayList<>();
 
-    public void addComment(Comment comment) {
-        comments.add(comment);
-    }
-
-    public void deleteComment(Comment comment) {
-        comments.remove(comment);
-    }
 }

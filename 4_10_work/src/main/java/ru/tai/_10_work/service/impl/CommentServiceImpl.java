@@ -14,6 +14,8 @@ import ru.tai._10_work.service.UserService;
 import ru.tai._10_work.utils.BeanUtils;
 
 import java.text.MessageFormat;
+import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -41,10 +43,21 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    public List<Comment> findAllByUserId(Long userId) {
+        log.debug("CommentServiceImpl->findAllByUserId userId= {}", userId);
+        List<Comment> comments = commentReporitory.findAllByUserId(userId);
+        if (comments != null) {
+            return comments;
+        }
+        return new ArrayList<>();
+    }
+
+    @Override
     public Comment save(Comment comment) {
         log.debug("CommentServiceImpl->save comment= {}", comment);
         User user = userService.findById(comment.getUser().getId());
         News news = newsService.findById(comment.getNews().getId());
+        comment.setCreateAt(Instant.now());
         comment.setUser(user);
         comment.setNews(news);
         return commentReporitory.save(comment);

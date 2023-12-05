@@ -1,7 +1,10 @@
 package ru.tai._10_work.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,17 +22,7 @@ public class Category {
     @Column(unique = true, nullable = false)
     private String name;
 
-//    @OneToMany(mappedBy = "category", cascade = {CascadeType.DETACH, CascadeType.MERGE,
-//            CascadeType.PERSIST, CascadeType.REFRESH})
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     private List<News> newsList = new ArrayList<>();
-
-    public void addNews(News news) {
-        newsList.add(news);
-    }
-
-    public void deleteNews(News news) {
-        newsList.remove(news);
-    }
 }

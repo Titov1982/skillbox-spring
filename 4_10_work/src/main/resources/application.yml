@@ -1,13 +1,3 @@
-spring:
-  jpa:
-    generate-ddl: true
-  datasource:
-    url: jdbc:postgresql://localhost:5432/news_service_db
-    username: postgres
-    password: postgres
-    hikari:
-      schema: app_schema
-
 app:
   entity-generator:
     enabled: true
@@ -15,3 +5,20 @@ app:
 logging:
   level:
     ru.tai: DEBUG
+
+spring:
+  jpa:
+    hibernate:
+#      ddl-auto: create-drop
+      ddl-auto: create
+    generate-ddl: true
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/news_service_db
+    username: postgres
+    password: postgres
+    hikari:
+      schema: app_schema

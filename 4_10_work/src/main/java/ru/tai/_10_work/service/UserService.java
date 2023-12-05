@@ -1,6 +1,5 @@
 package ru.tai._10_work.service;
 
-import ru.tai._10_work.model.News;
 import ru.tai._10_work.model.User;
 
 import java.util.List;

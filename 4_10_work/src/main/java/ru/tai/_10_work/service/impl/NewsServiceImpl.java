@@ -2,6 +2,8 @@ package ru.tai._10_work.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.tai._10_work.exception.EntityNotFoundException;
 import ru.tai._10_work.model.Category;
@@ -14,6 +16,7 @@ import ru.tai._10_work.service.UserService;
 import ru.tai._10_work.utils.BeanUtils;
 
 import java.text.MessageFormat;
+import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -29,6 +32,11 @@ public class NewsServiceImpl implements NewsService {
     public List<News> findAll() {
         log.debug("NewsServiceImpl->findAll");
         return newsRepository.findAll();
+    }
+
+    @Override
+    public Page<News> findAll(int pageNumber, int pageSize) {
+        return newsRepository.findAll(PageRequest.of(pageNumber, pageSize));
     }
 
     @Override
@@ -48,6 +56,7 @@ public class NewsServiceImpl implements NewsService {
         Category category = categoryService.findById(news.getCategory().getId());
         news.setUser(user);
         news.setCategory(category);
+        news.setCreateAt(Instant.now());
         return newsRepository.save(news);
     }
 
