@@ -2,7 +2,6 @@ package ru.tai._10_work.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.tai._10_work.exception.EntityNotFoundException;
@@ -35,8 +34,8 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public Page<News> findAll(int pageNumber, int pageSize) {
-        return newsRepository.findAll(PageRequest.of(pageNumber, pageSize));
+    public List<News> findAll(int pageNumber, int pageSize) {
+        return newsRepository.findAll(PageRequest.of(pageNumber, pageSize)).toList();
     }
 
     @Override

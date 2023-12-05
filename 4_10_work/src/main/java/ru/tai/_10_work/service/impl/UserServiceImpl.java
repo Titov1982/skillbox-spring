@@ -2,6 +2,7 @@ package ru.tai._10_work.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.tai._10_work.exception.EntityNotFoundException;
 import ru.tai._10_work.model.User;
@@ -22,6 +23,11 @@ public class UserServiceImpl implements UserService {
     public List<User> findAll() {
         log.debug("UserServiceImpl->findAll");
         return userRepository.findAll();
+    }
+
+    @Override
+    public List<User> findAll(int pageNumber, int pageSize) {
+        return userRepository.findAll(PageRequest.of(pageNumber, pageSize)).toList();
     }
 
     @Override
@@ -49,7 +55,7 @@ public class UserServiceImpl implements UserService {
             existedUser.setPassword(user.getPassword());
             existedUser.setComments(user.getComments());
             existedUser.setNewsList(user.getNewsList());
-            userRepository.save(existedUser);
+            return userRepository.save(existedUser);
         }
         throw new EntityNotFoundException(MessageFormat.format("Пользователь с ID= {0} не найден!", user.getId()));
     }

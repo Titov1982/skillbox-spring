@@ -56,7 +56,7 @@ public class CategoryServiceImpl implements CategoryService {
         if (existedCategory != null){
             existedCategory.setName(category.getName());
             existedCategory.setNewsList(category.getNewsList());
-            categoryRepository.save(existedCategory);
+            return categoryRepository.save(existedCategory);
         }
         throw new EntityNotFoundException(MessageFormat.format("Категория с ID= {0} не найдена!", category.getId()));
     }

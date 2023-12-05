@@ -12,4 +12,12 @@ public class UserResponse {
     private String username;
     private List<NewsResponse> newsList = new ArrayList<>();
     private List<CommentResponse> comments = new ArrayList<>();
+
+    public UserResponse() {
+    }
+
+    protected boolean canEqual(final Object other) {
+        return other instanceof UserResponse;
+    }
+
 }

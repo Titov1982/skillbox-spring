@@ -2,6 +2,7 @@ package ru.tai._10_work.mapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ru.tai._10_work.model.Category;
 import ru.tai._10_work.model.News;
 import ru.tai._10_work.service.CategoryService;
 import ru.tai._10_work.service.CommentService;
@@ -23,7 +24,13 @@ public abstract class NewsMapperDelegate implements NewsMapper{
         News news = new News();
         news.setTitle(request.getTitle());
         news.setDescription(request.getDescription());
-        news.setCategory(categoryService.findByName(request.getCategoryName()));
+        Category category = categoryService.findByName(request.getCategoryName());
+        if (category == null) {
+            category = new Category();
+            category.setName(request.getCategoryName());
+            category = categoryService.save(category);
+        }
+        news.setCategory(category);
         news.setUser(userService.findById(request.getUserId()));
         news.setComments(commentService.findAllByUserId(request.getUserId()));
         return news;

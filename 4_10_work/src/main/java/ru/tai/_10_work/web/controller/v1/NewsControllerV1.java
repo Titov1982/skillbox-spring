@@ -20,8 +20,9 @@ public class NewsControllerV1 {
     private final NewsMapper newsMapper;
 
     @GetMapping
-    public ResponseEntity<NewsListResponse> findById() {
-        return ResponseEntity.ok(newsMapper.newsListToNewsListResponse(newsService.findAll()));
+    public ResponseEntity<NewsListResponse> findById(@RequestParam int pageNumber, @RequestParam int pageSize) {
+        return ResponseEntity.ok(
+                newsMapper.newsListToNewsListResponse(newsService.findAll(pageNumber, pageSize)));
     }
 
     @GetMapping("/{id}")
@@ -31,18 +32,19 @@ public class NewsControllerV1 {
 
     @PostMapping
     public ResponseEntity<NewsResponse> create(@RequestBody UpsertNewsRequest request) {
+        News u = newsMapper.requestToNews(request);
         News news = newsService.save(newsMapper.requestToNews(request));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(newsMapper.newsToResponse(news));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<NewsResponse> update(@PathVariable Long newsId, @RequestBody UpsertNewsRequest request) {
+    public ResponseEntity<NewsResponse> update(@PathVariable("id") Long newsId, @RequestBody UpsertNewsRequest request) {
         News updatedNews = newsService.update(newsMapper.requestToNews(newsId, request));
         return ResponseEntity.ok(newsMapper.newsToResponse(updatedNews));
     }
 
-    @DeleteMapping("/id")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         newsService.deleteById(id);
         return ResponseEntity.noContent().build();

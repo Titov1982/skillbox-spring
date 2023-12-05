@@ -20,9 +20,9 @@ public class UserControllerV1 {
     private final UserMapper userMapper;
 
     @GetMapping
-    public ResponseEntity<UserListResponse> findAll() {
+    public ResponseEntity<UserListResponse> findAll(@RequestParam int pageNumber, @RequestParam int pageSize) {
         return ResponseEntity.ok(
-                userMapper.userListToUserListResponse(userService.findAll())
+                userMapper.userListToUserListResponse(userService.findAll(pageNumber, pageSize))
         );
     }
 
