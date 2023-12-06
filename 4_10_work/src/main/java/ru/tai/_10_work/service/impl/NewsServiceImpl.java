@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import ru.tai._10_work.exception.EntityNotFoundException;
 import ru.tai._10_work.model.Category;
 import ru.tai._10_work.model.News;
 import ru.tai._10_work.model.User;
@@ -14,7 +13,6 @@ import ru.tai._10_work.service.NewsService;
 import ru.tai._10_work.service.UserService;
 import ru.tai._10_work.utils.BeanUtils;
 
-import java.text.MessageFormat;
 import java.time.Instant;
 import java.util.List;
 
@@ -35,17 +33,14 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public List<News> findAll(int pageNumber, int pageSize) {
+        log.debug("NewsServiceImpl->findAll");
         return newsRepository.findAll(PageRequest.of(pageNumber, pageSize)).toList();
     }
 
     @Override
     public News findById(Long id) {
         log.debug("NewsServiceImpl->findById id= {}", id);
-        News news = newsRepository.findById(id).orElse(null);
-        if (news != null){
-            return news;
-        }
-        throw new EntityNotFoundException(MessageFormat.format("Новость с ID= {0} не найдена!", id));
+        return newsRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -65,11 +60,6 @@ public class NewsServiceImpl implements NewsService {
         User user = userService.findById(news.getUser().getId());
         Category category = categoryService.findById(news.getCategory().getId());
         News existedNews = findById(news.getId());
-
-//        existedNews.setTitle(news.getTitle());
-//        existedNews.setDescription(news.getDescription());
-//        existedNews.setCreateAt(news.getCreateAt());
-//        existedNews.setComments(news.getComments());
         BeanUtils.copyNonNullProperties(news, existedNews);
         existedNews.setUser(user);
         existedNews.setCategory(category);
@@ -79,11 +69,6 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public News deleteById(Long id) {
         log.debug("NewsServiceImpl->deleteById id= {}", id);
-        News news = newsRepository.findById(id).orElse(null);
-        if (news != null){
-            newsRepository.deleteById(id);
-            return news;
-        }
-        throw new EntityNotFoundException(MessageFormat.format("Новость с ID= {0} не найдена!", id));
+        return newsRepository.findById(id).orElse(null);
     }
 }

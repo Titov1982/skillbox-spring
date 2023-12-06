@@ -2,6 +2,7 @@ package ru.tai._10_work.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.tai._10_work.exception.EntityNotFoundException;
 import ru.tai._10_work.model.Category;
@@ -24,6 +25,11 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public List<Category> findAll(int pageNumber, int pageSize) {
+        return categoryRepository.findAll(PageRequest.of(pageNumber, pageSize)).toList();
+    }
+
+    @Override
     public Category findById(Long id) {
         log.debug("CategoryServiceImpl->findById id= {}", id);
         Category category = categoryRepository.findById(id).orElse(null);
@@ -36,11 +42,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category findByName(String name) {
         log.debug("CategoryServiceImpl->findByName name= {}", name);
-        Category category = categoryRepository.findByName(name).orElse(null);
-        if (category != null){
-            return category;
-        }
-        return null;
+        return categoryRepository.findByName(name).orElse(null);
     }
 
     @Override

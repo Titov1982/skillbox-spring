@@ -53,6 +53,11 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    public List<Comment> findAllByNewsId(Long newsId) {
+        return commentReporitory.findAllByNewsId(newsId);
+    }
+
+    @Override
     public Comment save(Comment comment) {
         log.debug("CommentServiceImpl->save comment= {}", comment);
         User user = userService.findById(comment.getUser().getId());
@@ -85,5 +90,10 @@ public class CommentServiceImpl implements CommentService {
             return comment;
         }
         throw new EntityNotFoundException(MessageFormat.format("Комментарий с ID= {0} не найден!", id));
+    }
+
+    @Override
+    public Long countAllByNewsId(Long newsId) {
+        return commentReporitory.countAllByNewsId(newsId);
     }
 }

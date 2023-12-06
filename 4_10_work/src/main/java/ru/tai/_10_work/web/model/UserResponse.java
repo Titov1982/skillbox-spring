@@ -11,7 +11,6 @@ public class UserResponse {
     private Long id;
     private String username;
     private List<NewsResponse> newsList = new ArrayList<>();
-    private List<CommentResponse> comments = new ArrayList<>();
 
     public UserResponse() {
     }
