@@ -3,6 +3,8 @@ package ru.tai._10_work.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import ru.tai._10_work.aop.UserControl;
 import ru.tai._10_work.exception.EntityNotFoundException;
 import ru.tai._10_work.model.Comment;
 import ru.tai._10_work.model.News;
@@ -36,10 +38,7 @@ public class CommentServiceImpl implements CommentService {
     public Comment findById(Long id) {
         log.debug("CommentServiceImpl->findById id= {}", id);
         Comment comment = commentReporitory.findById(id).orElse(null);
-        if (comment != null){
-            return comment;
-        }
-        throw new EntityNotFoundException(MessageFormat.format("Комментарий с ID= {0} не найден!", id));
+        return comment;
     }
 
     @Override
@@ -69,6 +68,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @UserControl
     public Comment update(Comment comment) {
         log.debug("CommentServiceImpl->update comment= {}", comment);
         User user = userService.findById(comment.getUser().getId());
@@ -82,6 +82,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @UserControl
     public Comment deleteById(Long id) {
         log.debug("CommentServiceImpl->deleteById id= {}", id);
         Comment comment = commentReporitory.findById(id).orElse(null);
@@ -89,7 +90,18 @@ public class CommentServiceImpl implements CommentService {
             commentReporitory.deleteById(id);
             return comment;
         }
-        throw new EntityNotFoundException(MessageFormat.format("Комментарий с ID= {0} не найден!", id));
+//        throw new EntityNotFoundException(MessageFormat.format("Комментарий с ID= {0} не найден!", id));
+        return null;
+    }
+
+    @Override
+    @UserControl
+    @Transactional
+    public Comment deleteByIdAndUserId(Long id, Long userId) {
+        log.debug("CommentServiceImpl->deleteByIdAndUserId id= {0}, userId= {1}", id, userId);
+        Comment deletedComment = commentReporitory.findById(id).orElse(null);
+        commentReporitory.deleteByIdAndUserId(id, userId);
+        return deletedComment;
     }
 
     @Override

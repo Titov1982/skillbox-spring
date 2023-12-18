@@ -11,4 +11,5 @@ public interface NewsRepository extends JpaRepository<News, Long> {
 
     Page<News> findAll(Pageable pageable);
 
+    void deleteByIdAndUserId(Long id, Long userId);
 }

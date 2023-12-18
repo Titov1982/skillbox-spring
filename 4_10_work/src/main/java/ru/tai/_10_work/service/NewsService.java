@@ -11,4 +11,5 @@ public interface NewsService {
     News save(News news);
     News update(News news);
     News deleteById(Long id);
+    News deleteByIdAndUserId(Long id, Long userId);
 }

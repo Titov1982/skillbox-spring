@@ -6,6 +6,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.tai._10_work.exception.EntityNotFoundException;
 import ru.tai._10_work.model.Category;
+import ru.tai._10_work.model.News;
+import ru.tai._10_work.model.User;
 import ru.tai._10_work.repository.CategoryRepository;
 import ru.tai._10_work.service.CategoryService;
 
@@ -26,17 +28,17 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<Category> findAll(int pageNumber, int pageSize) {
-        return categoryRepository.findAll(PageRequest.of(pageNumber, pageSize)).toList();
+        List<Category> categories = categoryRepository.findAll(PageRequest.of(pageNumber, pageSize)).toList();
+        for (Category category : categories) {
+            category.setNewsList(null);
+        }
+        return categories;
     }
 
     @Override
     public Category findById(Long id) {
         log.debug("CategoryServiceImpl->findById id= {}", id);
-        Category category = categoryRepository.findById(id).orElse(null);
-        if (category != null){
-            return category;
-        }
-        throw new EntityNotFoundException(MessageFormat.format("Категория с ID= {0} не найдена!", id));
+        return categoryRepository.findById(id).orElse(null);
     }
 
     @Override

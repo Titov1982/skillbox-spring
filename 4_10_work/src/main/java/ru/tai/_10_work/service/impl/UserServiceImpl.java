@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.tai._10_work.exception.EntityNotFoundException;
+import ru.tai._10_work.model.News;
 import ru.tai._10_work.model.User;
 import ru.tai._10_work.repository.UserRepository;
 import ru.tai._10_work.service.UserService;
@@ -27,7 +28,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findAll(int pageNumber, int pageSize) {
-        return userRepository.findAll(PageRequest.of(pageNumber, pageSize)).toList();
+        List<User> users = userRepository.findAll(PageRequest.of(pageNumber, pageSize)).toList();
+        for (User user: users) {
+            user.setComments(null);
+            for (News news : user.getNewsList()) {
+                news.setComments(null);
+            }
+        }
+        return users;
     }
 
     @Override

@@ -8,6 +8,7 @@ import ru.tai._10_work.model.Category;
 import ru.tai._10_work.model.Comment;
 import ru.tai._10_work.model.News;
 import ru.tai._10_work.model.User;
+import ru.tai._10_work.repository.CategoryRepository;
 
 import java.text.MessageFormat;
 import java.time.Instant;
@@ -23,6 +24,7 @@ public class TestService {
     private final CategoryService categoryService;
     private final NewsService newsService;
     private final CommentService commentService;
+    private final CategoryRepository categoryRepository;
 
     @Transactional
     public User createUser(String name, String pass) {
@@ -35,28 +37,26 @@ public class TestService {
     }
 
     @Transactional
-    public List<News> createNewsListAndCategory(Long userId, String categoryName) {
+    public List<News> createNewsListAndCategory(Long userId, Category category) {
         log.debug("TestService->createNewsListAndCategory");
 
         User existedUser = userService.findById(userId);
-
-        Category category = createCategory(categoryName);
-        category.setName("Категория 1");
+        Category existedCategory = categoryService.findById(category.getId());
 
         List<News> newsList = new ArrayList<>();
 
         for (int i = 1; i <= 20; i++) {
-            News news1 = new News();
-            news1.setCategory(category);
-            news1.setTitle("Заголовок новости " + i);
-            news1.setDescription("Текст новости " + i);
-            news1.setCreateAt(Instant.now());
-            news1.setUser(existedUser);
+            News news = new News();
+            news.setCategory(existedCategory);
+            news.setTitle("Заголовок новости " + i);
+            news.setDescription("Текст новости " + i);
+            news.setCreateAt(Instant.now());
+            news.setUser(existedUser);
 
-            existedUser.getNewsList().add(news1);
-            category.getNewsList().add(news1);
-            news1 = newsService.save(news1);
-            newsList.add(news1);
+            existedUser.getNewsList().add(news);
+            category.getNewsList().add(news);
+            news = newsService.save(news);
+            newsList.add(news);
         }
         return newsList;
     }
@@ -76,7 +76,7 @@ public class TestService {
         return comment1;
     }
 
-    @Transactional
+//    @Transactional
     public News createNews(Long userId, String newsTitle, String newsDesc, String categoryName) {
         log.debug("TestService->createOneNews");
 

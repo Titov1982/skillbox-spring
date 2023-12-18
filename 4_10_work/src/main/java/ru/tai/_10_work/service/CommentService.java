@@ -13,4 +13,5 @@ public interface CommentService {
     Comment update(Comment comment);
     Comment deleteById(Long id);
     Long countAllByNewsId(Long newsId);
+    Comment deleteByIdAndUserId(Long id, Long userId);
 }

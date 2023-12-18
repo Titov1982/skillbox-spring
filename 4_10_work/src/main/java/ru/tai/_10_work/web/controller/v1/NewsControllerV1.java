@@ -41,9 +41,6 @@ public class NewsControllerV1 {
         NewsListResponse newsListResponse = new NewsListResponse();
         newsListResponse.setNewsList(listNewsResponse);
         return ResponseEntity.ok(newsListResponse);
-
-//        return ResponseEntity.ok(
-//                newsMapper.newsListToNewsListResponse(newsService.findAll(pageNumber, pageSize)));
     }
 
     @GetMapping("/{id}")
@@ -73,8 +70,8 @@ public class NewsControllerV1 {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        newsService.deleteById(id);
+    public ResponseEntity<Void> delete(@PathVariable Long id, @RequestParam("userId") Long userId) {
+        newsService.deleteByIdAndUserId(id, userId);
         return ResponseEntity.noContent().build();
     }
 }

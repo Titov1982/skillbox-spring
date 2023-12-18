@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
+import ru.tai._10_work.model.Category;
 import ru.tai._10_work.model.Comment;
 import ru.tai._10_work.model.News;
 import ru.tai._10_work.model.User;
@@ -25,7 +26,8 @@ public class EntityGenerator {
         log.debug("EntityGenerator->startEntityGenerator");
 
         User user1 = testService.createUser("User1", "User111");
-        List<News> newsListUser1 = testService.createNewsListAndCategory(user1.getId(), "Категория 1");
+        Category category = testService.createCategory("Категория 1");
+        List<News> newsListUser1 = testService.createNewsListAndCategory(user1.getId(), category);
 
         User user2 = testService.createUser("User2", "User222");
         Comment comment1 = testService.createComment(user2.getId(), newsListUser1.get(0).getId(), "Комментарий 1");

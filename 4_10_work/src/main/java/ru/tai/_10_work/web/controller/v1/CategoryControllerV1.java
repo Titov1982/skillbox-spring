@@ -6,10 +6,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.tai._10_work.mapper.CategoryMapper;
 import ru.tai._10_work.model.Category;
+import ru.tai._10_work.model.News;
+import ru.tai._10_work.model.User;
 import ru.tai._10_work.service.CategoryService;
 import ru.tai._10_work.web.model.CategoryListResponse;
 import ru.tai._10_work.web.model.CategoryResponse;
 import ru.tai._10_work.web.model.UpsertCategoryRequest;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,9 +32,21 @@ public class CategoryControllerV1 {
 
     @GetMapping("/{id}")
     public ResponseEntity<CategoryResponse> findById(@PathVariable Long id) {
+
+        Category category = categoryService.findById(id);
+        if (category != null) {
+            List<News> newsList = category.getNewsList();
+            if (newsList != null && !newsList.isEmpty()) {
+                for (News news : newsList) {
+                    news.setCategory(null);
+                    news.setComments(null);
+                    news.setUser(null);
+                }
+            }
+        }
+
         return ResponseEntity.ok(
-                categoryMapper.categoryToResponse(categoryService.findById(id))
-        );
+                categoryMapper.categoryToResponse(category));
     }
 
     @PostMapping

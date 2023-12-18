@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import ru.tai._10_work.aop.UserControl;
 import ru.tai._10_work.model.Category;
 import ru.tai._10_work.model.News;
 import ru.tai._10_work.model.User;
@@ -55,6 +57,7 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
+    @UserControl
     public News update(News news) {
         log.debug("NewsServiceImpl->update news= {}", news);
         User user = userService.findById(news.getUser().getId());
@@ -67,8 +70,21 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
+    @UserControl
     public News deleteById(Long id) {
         log.debug("NewsServiceImpl->deleteById id= {}", id);
-        return newsRepository.findById(id).orElse(null);
+        News deletedNews = newsRepository.findById(id).orElse(null);
+        newsRepository.deleteById(id);
+        return deletedNews;
+    }
+
+    @Override
+    @UserControl
+    @Transactional
+    public News deleteByIdAndUserId(Long id, Long userId) {
+        log.debug("NewsServiceImpl->deleteByIdAndUserId id= {0}, userId= {1}", id, userId);
+        News deletedNews = newsRepository.findById(id).orElse(null);
+        newsRepository.deleteByIdAndUserId(id, userId);
+        return deletedNews;
     }
 }
