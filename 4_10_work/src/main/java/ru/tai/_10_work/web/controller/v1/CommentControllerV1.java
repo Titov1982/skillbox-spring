@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.tai._10_work.exception.EntityNotFoundException;
 import ru.tai._10_work.mapper.CommentMapper;
 import ru.tai._10_work.model.Comment;
 import ru.tai._10_work.service.CommentService;
@@ -11,6 +12,7 @@ import ru.tai._10_work.web.model.CommentListResponse;
 import ru.tai._10_work.web.model.CommentResponse;
 import ru.tai._10_work.web.model.UpsertCommentRequest;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,15 +29,18 @@ public class CommentControllerV1 {
 
         List<CommentResponse> commentResponseList = new ArrayList<>();
         List<Comment> comments = commentService.findAllByNewsId(newsId);
-        for (Comment comment : comments) {
-            comment.setNews(null);
-            comment.setNews(null);
-            commentResponseList.add(commentMapper.commentToResponse(comment));
-        }
+        if (!comments.isEmpty()) {
+            for (Comment comment : comments) {
+                comment.setNews(null);
+                comment.setNews(null);
+                commentResponseList.add(commentMapper.commentToResponse(comment));
+            }
 
-        CommentListResponse commentListResponse = new CommentListResponse();
-        commentListResponse.setComments(commentResponseList);
-        return ResponseEntity.ok(commentListResponse);
+            CommentListResponse commentListResponse = new CommentListResponse();
+            commentListResponse.setComments(commentResponseList);
+            return ResponseEntity.ok(commentListResponse);
+        }
+        throw new EntityNotFoundException(MessageFormat.format("Комментарии для новости с id= {0} не найдены", newsId));
     }
 
 
@@ -49,7 +54,10 @@ public class CommentControllerV1 {
     @PutMapping("/{id}")
     public ResponseEntity<CommentResponse> update(@PathVariable("id") Long commentId, @RequestBody UpsertCommentRequest request) {
         Comment updatedComment = commentService.update(commentMapper.requestToComment(commentId, request));
-        return ResponseEntity.ok(commentMapper.commentToResponse(updatedComment));
+        if (updatedComment != null) {
+            return ResponseEntity.ok(commentMapper.commentToResponse(updatedComment));
+        }
+        throw new EntityNotFoundException(MessageFormat.format("Комментарий с id= {0} не найден", commentId));
     }
 
     @DeleteMapping("/{id}")

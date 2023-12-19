@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.tai._10_work.exception.EntityNotFoundException;
 import ru.tai._10_work.mapper.NewsMapper;
 import ru.tai._10_work.model.Comment;
 import ru.tai._10_work.model.News;
@@ -14,6 +15,7 @@ import ru.tai._10_work.web.model.NewsListResponse;
 import ru.tai._10_work.web.model.NewsResponse;
 import ru.tai._10_work.web.model.UpsertNewsRequest;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,14 +49,17 @@ public class NewsControllerV1 {
     @GetMapping("/{id}")
     public ResponseEntity<NewsResponse> findById(@PathVariable("id") Long id) {
         News news = newsService.findById(id);
-        List<Comment> comments = null;
         if (news != null) {
-            comments = commentService.findAllByNewsId(id);
-            news.setComments(comments);
+            List<Comment> comments = null;
+            if (news != null) {
+                comments = commentService.findAllByNewsId(id);
+                news.setComments(comments);
+            }
+            NewsResponse newsResponse = newsMapper.newsToResponse(news);
+            newsResponse.setCountComment(Long.valueOf(comments.size()));
+            return ResponseEntity.ok(newsResponse);
         }
-        NewsResponse newsResponse = newsMapper.newsToResponse(news);
-        newsResponse.setCountComment(Long.valueOf(comments.size()));
-        return ResponseEntity.ok(newsResponse);
+        throw new EntityNotFoundException(MessageFormat.format("Новость с id= {0} не найдена", id));
     }
 
     @PostMapping
@@ -67,7 +72,10 @@ public class NewsControllerV1 {
     @PutMapping("/{id}")
     public ResponseEntity<NewsResponse> update(@PathVariable("id") Long newsId, @RequestBody UpsertNewsRequest request) {
         News updatedNews = newsService.update(newsMapper.requestToNews(newsId, request));
-        return ResponseEntity.ok(newsMapper.newsToResponse(updatedNews));
+        if (updatedNews != null) {
+            return ResponseEntity.ok(newsMapper.newsToResponse(updatedNews));
+        }
+        throw new EntityNotFoundException(MessageFormat.format("Новость с id= {0} не найдена", newsId));
     }
 
     @DeleteMapping("/{id}")

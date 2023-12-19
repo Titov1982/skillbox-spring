@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.tai._10_work.exception.EntityNotFoundException;
 import ru.tai._10_work.mapper.CategoryMapper;
 import ru.tai._10_work.model.Category;
 import ru.tai._10_work.model.News;
@@ -13,6 +14,7 @@ import ru.tai._10_work.web.model.CategoryListResponse;
 import ru.tai._10_work.web.model.CategoryResponse;
 import ru.tai._10_work.web.model.UpsertCategoryRequest;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 @RestController
@@ -44,9 +46,10 @@ public class CategoryControllerV1 {
                     news.setUser(null);
                 }
             }
+            return ResponseEntity.ok(
+                    categoryMapper.categoryToResponse(category));
         }
-        return ResponseEntity.ok(
-                categoryMapper.categoryToResponse(category));
+        throw new EntityNotFoundException(MessageFormat.format("Категория с id= {0} не найдена", id));
     }
 
     @PostMapping
@@ -57,9 +60,12 @@ public class CategoryControllerV1 {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CategoryResponse> update(@PathVariable("id") Long userId, @RequestBody UpsertCategoryRequest request) {
-        Category updatedCategory = categoryService.update(categoryMapper.requestToCategory(userId, request));
-        return ResponseEntity.ok(categoryMapper.categoryToResponse(updatedCategory));
+    public ResponseEntity<CategoryResponse> update(@PathVariable("id") Long categoryId, @RequestBody UpsertCategoryRequest request) {
+        Category updatedCategory = categoryService.update(categoryMapper.requestToCategory(categoryId, request));
+        if (updatedCategory != null) {
+            return ResponseEntity.ok(categoryMapper.categoryToResponse(updatedCategory));
+        }
+        throw new EntityNotFoundException(MessageFormat.format("Категория с id= {0} не найдена", categoryId));
     }
 
     @DeleteMapping("/{id}")

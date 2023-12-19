@@ -4,12 +4,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.tai._10_work.exception.EntityNotFoundException;
 import ru.tai._10_work.mapper.UserMapper;
 import ru.tai._10_work.model.User;
 import ru.tai._10_work.service.UserService;
 import ru.tai._10_work.web.model.UpsertUserRequest;
 import ru.tai._10_work.web.model.UserListResponse;
 import ru.tai._10_work.web.model.UserResponse;
+
+import java.text.MessageFormat;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,9 +31,11 @@ public class UserControllerV1 {
 
     @GetMapping("/{id}")
     public ResponseEntity<UserResponse> findById(@PathVariable Long id) {
-        return ResponseEntity.ok(
-                userMapper.userToResponse(userService.findById(id))
-        );
+        User user = userService.findById(id);
+        if (user != null) {
+            return ResponseEntity.ok(userMapper.userToResponse(user));
+        }
+        throw new EntityNotFoundException(MessageFormat.format("Пользователь с id= {0} не найдена", id));
     }
 
     @PostMapping
@@ -43,7 +48,10 @@ public class UserControllerV1 {
     @PutMapping("/{id}")
     public ResponseEntity<UserResponse> update(@PathVariable("id") Long userId, @RequestBody UpsertUserRequest request) {
         User updatedUser = userService.update(userMapper.requestToUser(userId, request));
-        return ResponseEntity.ok(userMapper.userToResponse(updatedUser));
+        if (updatedUser != null) {
+            return ResponseEntity.ok(userMapper.userToResponse(updatedUser));
+        }
+        throw new EntityNotFoundException(MessageFormat.format("Пользователь с id= {0} не найдена", userId));
     }
 
     @DeleteMapping("/{id}")
