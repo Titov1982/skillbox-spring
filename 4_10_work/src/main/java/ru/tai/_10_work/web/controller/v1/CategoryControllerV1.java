@@ -1,13 +1,13 @@
 package ru.tai._10_work.web.controller.v1;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.tai._10_work.mapper.CategoryMapper;
 import ru.tai._10_work.model.Category;
 import ru.tai._10_work.model.News;
-import ru.tai._10_work.model.User;
 import ru.tai._10_work.service.CategoryService;
 import ru.tai._10_work.web.model.CategoryListResponse;
 import ru.tai._10_work.web.model.CategoryResponse;
@@ -18,6 +18,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/categories")
+@Slf4j
 public class CategoryControllerV1 {
 
     private final CategoryService categoryService;
@@ -44,7 +45,6 @@ public class CategoryControllerV1 {
                 }
             }
         }
-
         return ResponseEntity.ok(
                 categoryMapper.categoryToResponse(category));
     }

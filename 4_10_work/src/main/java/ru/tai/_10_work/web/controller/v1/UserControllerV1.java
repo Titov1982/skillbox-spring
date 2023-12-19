@@ -11,8 +11,6 @@ import ru.tai._10_work.web.model.UpsertUserRequest;
 import ru.tai._10_work.web.model.UserListResponse;
 import ru.tai._10_work.web.model.UserResponse;
 
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/users")

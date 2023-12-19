@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tai._10_work.aop.UserControl;
-import ru.tai._10_work.exception.EntityNotFoundException;
 import ru.tai._10_work.model.Comment;
 import ru.tai._10_work.model.News;
 import ru.tai._10_work.model.User;
@@ -15,7 +14,6 @@ import ru.tai._10_work.service.NewsService;
 import ru.tai._10_work.service.UserService;
 import ru.tai._10_work.utils.BeanUtils;
 
-import java.text.MessageFormat;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,8 +35,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public Comment findById(Long id) {
         log.debug("CommentServiceImpl->findById id= {}", id);
-        Comment comment = commentReporitory.findById(id).orElse(null);
-        return comment;
+        return commentReporitory.findById(id).orElse(null);
     }
 
     @Override
@@ -53,6 +50,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<Comment> findAllByNewsId(Long newsId) {
+        log.debug("CommentServiceImpl->findAllByNewsId newsId= {}", newsId);
         return commentReporitory.findAllByNewsId(newsId);
     }
 
@@ -90,7 +88,6 @@ public class CommentServiceImpl implements CommentService {
             commentReporitory.deleteById(id);
             return comment;
         }
-//        throw new EntityNotFoundException(MessageFormat.format("Комментарий с ID= {0} не найден!", id));
         return null;
     }
 
@@ -98,7 +95,7 @@ public class CommentServiceImpl implements CommentService {
     @UserControl
     @Transactional
     public Comment deleteByIdAndUserId(Long id, Long userId) {
-        log.debug("CommentServiceImpl->deleteByIdAndUserId id= {0}, userId= {1}", id, userId);
+        log.debug("CommentServiceImpl->deleteByIdAndUserId id= {}, userId= {}", id, userId);
         Comment deletedComment = commentReporitory.findById(id).orElse(null);
         commentReporitory.deleteByIdAndUserId(id, userId);
         return deletedComment;
@@ -106,6 +103,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Long countAllByNewsId(Long newsId) {
+        log.debug("CommentServiceImpl->countAllByNewsId newsId= {}", newsId);
         return commentReporitory.countAllByNewsId(newsId);
     }
 }

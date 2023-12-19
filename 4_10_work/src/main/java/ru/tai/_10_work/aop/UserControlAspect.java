@@ -8,12 +8,10 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.SourceLocation;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import ru.tai._10_work.model.Comment;
 import ru.tai._10_work.model.News;
 import ru.tai._10_work.service.CommentService;
 import ru.tai._10_work.service.NewsService;
-import ru.tai._10_work.service.impl.CommentServiceImpl;
 
 @Aspect
 @Component

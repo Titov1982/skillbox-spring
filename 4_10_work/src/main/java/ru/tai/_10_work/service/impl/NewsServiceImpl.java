@@ -35,7 +35,7 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public List<News> findAll(int pageNumber, int pageSize) {
-        log.debug("NewsServiceImpl->findAll");
+        log.debug("NewsServiceImpl->findAll pageNumber= {}, pageSize= {}", pageNumber, pageSize);
         return newsRepository.findAll(PageRequest.of(pageNumber, pageSize)).toList();
     }
 
@@ -82,7 +82,7 @@ public class NewsServiceImpl implements NewsService {
     @UserControl
     @Transactional
     public News deleteByIdAndUserId(Long id, Long userId) {
-        log.debug("NewsServiceImpl->deleteByIdAndUserId id= {0}, userId= {1}", id, userId);
+        log.debug("NewsServiceImpl->deleteByIdAndUserId id= {}, userId= {}", id, userId);
         News deletedNews = newsRepository.findById(id).orElse(null);
         newsRepository.deleteByIdAndUserId(id, userId);
         return deletedNews;

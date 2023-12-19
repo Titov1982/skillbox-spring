@@ -4,13 +4,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import ru.tai._10_work.exception.EntityNotFoundException;
 import ru.tai._10_work.model.News;
 import ru.tai._10_work.model.User;
 import ru.tai._10_work.repository.UserRepository;
 import ru.tai._10_work.service.UserService;
 
-import java.text.MessageFormat;
 import java.util.List;
 
 @Service
@@ -28,8 +26,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findAll(int pageNumber, int pageSize) {
+        log.debug("UserServiceImpl->findAll pageNumber= {}, pageSize= {}", pageNumber, pageSize);
         List<User> users = userRepository.findAll(PageRequest.of(pageNumber, pageSize)).toList();
-        for (User user: users) {
+        for (User user : users) {
             user.setComments(null);
             for (News news : user.getNewsList()) {
                 news.setComments(null);
@@ -42,10 +41,7 @@ public class UserServiceImpl implements UserService {
     public User findById(Long id) {
         log.debug("UserServiceImpl->findById id= {}", id);
         User user = userRepository.findById(id).orElse(null);
-        if (user != null){
-            return user;
-        }
-        throw new EntityNotFoundException(MessageFormat.format("Пользователь с ID= {0} не найден!", id));
+        return user;
     }
 
     @Override
@@ -58,24 +54,24 @@ public class UserServiceImpl implements UserService {
     public User update(User user) {
         log.debug("UserServiceImpl->update user= {}", user);
         User existedUser = userRepository.findById(user.getId()).orElse(null);
-        if (existedUser != null){
+        if (existedUser != null) {
             existedUser.setUsername(user.getUsername());
             existedUser.setPassword(user.getPassword());
             existedUser.setComments(user.getComments());
             existedUser.setNewsList(user.getNewsList());
             return userRepository.save(existedUser);
         }
-        throw new EntityNotFoundException(MessageFormat.format("Пользователь с ID= {0} не найден!", user.getId()));
+        return null;
     }
 
     @Override
     public User deleteById(Long id) {
         log.debug("UserServiceImpl->deleteById id= {}", id);
         User user = userRepository.findById(id).orElse(null);
-        if (user != null){
+        if (user != null) {
             userRepository.deleteById(id);
             return user;
         }
-        throw new EntityNotFoundException(MessageFormat.format("Пользователь с ID= {0} не найден!", id));
+        return null;
     }
 }
