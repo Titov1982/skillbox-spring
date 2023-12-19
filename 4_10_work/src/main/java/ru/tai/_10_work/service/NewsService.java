@@ -1,6 +1,7 @@
 package ru.tai._10_work.service;
 
 import ru.tai._10_work.model.News;
+import ru.tai._10_work.web.model.NewsFilter;
 
 import java.util.List;
 
@@ -12,4 +13,6 @@ public interface NewsService {
     News update(News news);
     News deleteById(Long id);
     News deleteByIdAndUserId(Long id, Long userId);
+
+    List<News> filterBy(NewsFilter filter);
 }

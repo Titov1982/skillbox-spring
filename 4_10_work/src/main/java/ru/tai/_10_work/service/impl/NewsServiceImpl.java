@@ -14,6 +14,7 @@ import ru.tai._10_work.service.CategoryService;
 import ru.tai._10_work.service.NewsService;
 import ru.tai._10_work.service.UserService;
 import ru.tai._10_work.utils.BeanUtils;
+import ru.tai._10_work.web.model.NewsFilter;
 
 import java.time.Instant;
 import java.util.List;
@@ -86,5 +87,19 @@ public class NewsServiceImpl implements NewsService {
         News deletedNews = newsRepository.findById(id).orElse(null);
         newsRepository.deleteByIdAndUserId(id, userId);
         return deletedNews;
+    }
+
+    @Override
+    public List<News> filterBy(NewsFilter filter) {
+        if (filter.getCategoryId() != null && filter.getUserId() != null) {
+            return newsRepository.findAllByCategoryIdAndUserId(filter.getCategoryId(), filter.getUserId());
+        }
+        else if (filter.getCategoryId() != null) {
+            return newsRepository.findAllByCategoryId(filter.getCategoryId());
+        }
+        else if (filter.getUserId() != null) {
+            return newsRepository.findAllByUserId(filter.getUserId());
+        }
+        return null;
     }
 }

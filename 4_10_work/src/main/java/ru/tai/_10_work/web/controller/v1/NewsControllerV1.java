@@ -9,6 +9,7 @@ import ru.tai._10_work.model.Comment;
 import ru.tai._10_work.model.News;
 import ru.tai._10_work.service.CommentService;
 import ru.tai._10_work.service.NewsService;
+import ru.tai._10_work.web.model.NewsFilter;
 import ru.tai._10_work.web.model.NewsListResponse;
 import ru.tai._10_work.web.model.NewsResponse;
 import ru.tai._10_work.web.model.UpsertNewsRequest;
@@ -73,5 +74,15 @@ public class NewsControllerV1 {
     public ResponseEntity<Void> delete(@PathVariable Long id, @RequestParam("userId") Long userId) {
         newsService.deleteByIdAndUserId(id, userId);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/filter")
+    public ResponseEntity<NewsListResponse> filterBy(@RequestParam(required = false) Long categoryId, @RequestParam(required = false) Long userId) {
+        NewsFilter filter = new NewsFilter();
+        filter.setCategoryId(categoryId);
+        filter.setUserId(userId);
+        return ResponseEntity.ok(
+                newsMapper.newsListToNewsListResponse(newsService.filterBy(filter))
+        );
     }
 }
