@@ -1,5 +1,6 @@
 package ru.tai._10_work.web.controller.v1;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,11 +51,8 @@ public class NewsControllerV1 {
     public ResponseEntity<NewsResponse> findById(@PathVariable("id") Long id) {
         News news = newsService.findById(id);
         if (news != null) {
-            List<Comment> comments = null;
-            if (news != null) {
-                comments = commentService.findAllByNewsId(id);
-                news.setComments(comments);
-            }
+            List<Comment> comments = commentService.findAllByNewsId(id);
+            news.setComments(comments);
             NewsResponse newsResponse = newsMapper.newsToResponse(news);
             newsResponse.setCountComment(Long.valueOf(comments.size()));
             return ResponseEntity.ok(newsResponse);
@@ -63,14 +61,14 @@ public class NewsControllerV1 {
     }
 
     @PostMapping
-    public ResponseEntity<NewsResponse> create(@RequestBody UpsertNewsRequest request) {
+    public ResponseEntity<NewsResponse> create(@RequestBody @Valid UpsertNewsRequest request) {
         News news = newsService.save(newsMapper.requestToNews(request));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(newsMapper.newsToResponse(news));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<NewsResponse> update(@PathVariable("id") Long newsId, @RequestBody UpsertNewsRequest request) {
+    public ResponseEntity<NewsResponse> update(@PathVariable("id") Long newsId, @RequestBody @Valid UpsertNewsRequest request) {
         News updatedNews = newsService.update(newsMapper.requestToNews(newsId, request));
         if (updatedNews != null) {
             return ResponseEntity.ok(newsMapper.newsToResponse(updatedNews));

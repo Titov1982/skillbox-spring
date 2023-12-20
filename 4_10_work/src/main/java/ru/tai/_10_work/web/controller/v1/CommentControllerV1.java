@@ -1,5 +1,6 @@
 package ru.tai._10_work.web.controller.v1;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,14 +46,14 @@ public class CommentControllerV1 {
 
 
     @PostMapping
-    public ResponseEntity<CommentResponse> create(@RequestBody UpsertCommentRequest request) {
+    public ResponseEntity<CommentResponse> create(@RequestBody @Valid UpsertCommentRequest request) {
         Comment comment = commentService.save(commentMapper.requestToComment(request));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(commentMapper.commentToResponse(comment));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CommentResponse> update(@PathVariable("id") Long commentId, @RequestBody UpsertCommentRequest request) {
+    public ResponseEntity<CommentResponse> update(@PathVariable("id") Long commentId, @RequestBody @Valid UpsertCommentRequest request) {
         Comment updatedComment = commentService.update(commentMapper.requestToComment(commentId, request));
         if (updatedComment != null) {
             return ResponseEntity.ok(commentMapper.commentToResponse(updatedComment));

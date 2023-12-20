@@ -1,5 +1,6 @@
 package ru.tai._10_work.web.controller.v1;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,14 +40,14 @@ public class UserControllerV1 {
     }
 
     @PostMapping
-    public ResponseEntity<UserResponse> create(@RequestBody UpsertUserRequest request) {
+    public ResponseEntity<UserResponse> create(@RequestBody @Valid UpsertUserRequest request) {
         User newUser = userService.save(userMapper.requestToUser(request));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(userMapper.userToResponse(newUser));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponse> update(@PathVariable("id") Long userId, @RequestBody UpsertUserRequest request) {
+    public ResponseEntity<UserResponse> update(@PathVariable("id") Long userId, @RequestBody @Valid UpsertUserRequest request) {
         User updatedUser = userService.update(userMapper.requestToUser(userId, request));
         if (updatedUser != null) {
             return ResponseEntity.ok(userMapper.userToResponse(updatedUser));

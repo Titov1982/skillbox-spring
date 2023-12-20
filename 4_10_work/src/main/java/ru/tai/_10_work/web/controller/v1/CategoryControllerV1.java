@@ -1,5 +1,6 @@
 package ru.tai._10_work.web.controller.v1;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -53,14 +54,14 @@ public class CategoryControllerV1 {
     }
 
     @PostMapping
-    public ResponseEntity<CategoryResponse> create(@RequestBody UpsertCategoryRequest request) {
+    public ResponseEntity<CategoryResponse> create(@RequestBody @Valid UpsertCategoryRequest request) {
         Category newCategory = categoryService.save(categoryMapper.requestToCategory(request));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(categoryMapper.categoryToResponse(newCategory));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CategoryResponse> update(@PathVariable("id") Long categoryId, @RequestBody UpsertCategoryRequest request) {
+    public ResponseEntity<CategoryResponse> update(@PathVariable("id") Long categoryId, @RequestBody @Valid UpsertCategoryRequest request) {
         Category updatedCategory = categoryService.update(categoryMapper.requestToCategory(categoryId, request));
         if (updatedCategory != null) {
             return ResponseEntity.ok(categoryMapper.categoryToResponse(updatedCategory));

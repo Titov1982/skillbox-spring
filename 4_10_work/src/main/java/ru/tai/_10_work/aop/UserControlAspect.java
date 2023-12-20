@@ -27,16 +27,11 @@ public class UserControlAspect {
 
         Object[] args = proceedingJoinPoint.getArgs();
 
-//        Class<?> argumentClazz = args[0].getClass();
-//        String argumentClassName = argumentClazz.getSimpleName();
-//        argumentClazz.newInstance();
-
         Signature signature = proceedingJoinPoint.getSignature();
         String methodName = signature.getName();
 
         SourceLocation sourceLocation = proceedingJoinPoint.getSourceLocation();
         String parentClassName = sourceLocation.getWithinType().getSimpleName();
-        //        Class<?> parentClass = sourceLocation.getWithinType();
 
 
 
