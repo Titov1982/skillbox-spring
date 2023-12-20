@@ -4,11 +4,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import ru.tai._10_work.exception.EntityAlreadyExistsExeption;
 import ru.tai._10_work.model.News;
 import ru.tai._10_work.model.User;
 import ru.tai._10_work.repository.UserRepository;
 import ru.tai._10_work.service.UserService;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 @Service
@@ -45,9 +47,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User save(User user) {
+    public User save(User user) throws EntityAlreadyExistsExeption {
         log.debug("UserServiceImpl->save user= {}", user);
-        return userRepository.save(user);
+        User existedUser = userRepository.findByUsername(user.getUsername()).orElse(null);
+        if (existedUser == null) {
+            return userRepository.save(user);
+        }
+        throw new EntityAlreadyExistsExeption(MessageFormat.format("Пользователь с username= {0} уже существует", existedUser.getUsername()));
     }
 
     @Override

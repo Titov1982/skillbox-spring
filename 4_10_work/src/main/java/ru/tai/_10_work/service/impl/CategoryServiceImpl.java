@@ -1,5 +1,9 @@
 package ru.tai._10_work.service.impl;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -8,6 +12,8 @@ import ru.tai._10_work.exception.EntityNotFoundException;
 import ru.tai._10_work.model.Category;
 import ru.tai._10_work.repository.CategoryRepository;
 import ru.tai._10_work.service.CategoryService;
+import ru.tai._10_work.web.model.CategoryListResponse;
+import ru.tai._10_work.web.model.NewsListResponse;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -18,11 +24,13 @@ import java.util.List;
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
+
     @Override
     public List<Category> findAll() {
         log.debug("CategoryServiceImpl->findAll");
         return categoryRepository.findAll();
     }
+
 
     @Override
     public List<Category> findAll(int pageNumber, int pageSize) {

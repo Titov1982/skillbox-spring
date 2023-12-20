@@ -9,9 +9,7 @@ logging:
 spring:
   jpa:
     hibernate:
-#      ddl-auto: create-drop
       ddl-auto: create
-#      ddl-auto: none
     generate-ddl: true
     show-sql: true
     properties:

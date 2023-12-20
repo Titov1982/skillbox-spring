@@ -41,4 +41,4 @@
 
 * logging:
   - level:
-    - ru.tai: DEBUG - настройка логирования (DEBUG, WARN, и т.д.)3ю8
+    - ru.tai: DEBUG - настройка логирования (DEBUG, WARN, и т.д.)

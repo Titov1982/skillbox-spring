@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.tai._10_work.exception.EntityAlreadyExistsExeption;
 import ru.tai._10_work.model.Category;
 import ru.tai._10_work.model.Comment;
 import ru.tai._10_work.model.News;
@@ -27,7 +28,7 @@ public class TestService {
     private final CategoryRepository categoryRepository;
 
     @Transactional
-    public User createUser(String name, String pass) {
+    public User createUser(String name, String pass) throws EntityAlreadyExistsExeption {
         log.debug(MessageFormat.format("TestService->createUser user: username={0} password={1}", name, pass));
         User user = new User();
         user.setUsername(name);

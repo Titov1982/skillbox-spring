@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
+import ru.tai._10_work.exception.EntityAlreadyExistsExeption;
 import ru.tai._10_work.model.Category;
 import ru.tai._10_work.model.Comment;
 import ru.tai._10_work.model.News;
@@ -22,7 +23,7 @@ public class EntityGenerator {
     private final TestService testService;
 
     @EventListener(ApplicationStartedEvent.class)
-    public void startEntityGenerator() {
+    public void startEntityGenerator() throws EntityAlreadyExistsExeption {
         log.debug("EntityGenerator->startEntityGenerator");
 
         User user1 = testService.createUser("User1", "User111");
