@@ -22,7 +22,7 @@ public class UserControlAspect {
     private final CommentService commentService;
     private final NewsService newsService;
 
-    @Around("@annotation(UserControl)")
+//    @Around("@annotation(UserControl)")
     public Object userControlAround(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 
         Object[] args = proceedingJoinPoint.getArgs();
@@ -32,8 +32,6 @@ public class UserControlAspect {
 
         SourceLocation sourceLocation = proceedingJoinPoint.getSourceLocation();
         String parentClassName = sourceLocation.getWithinType().getSimpleName();
-
-
 
         if (parentClassName.equals("CommentServiceImpl")) {
 
